@@ -36,7 +36,19 @@ app.use('/api',userRoutes);
 app.use('/api',courseRoutes);
 app.use('/api',adminRoutes)
 
-app.listen(port, ()=>{
-    console.log(`Server is running on http://localhost:${port}`);
-    connectDB()
-})
+const startServer = async () => {
+  try {
+    await connectDB(); // ✅ DB FIRST
+
+    app.listen(port, () => {
+      console.log(`Server running on http://localhost:${port}`);
+    });
+
+  } catch (error) {
+    console.error("Server startup failed:", error);
+    process.exit(1);
+  }
+};
+
+startServer();
+
